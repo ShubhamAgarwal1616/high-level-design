@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JS Concatenation Demo</title>
+</head>
+<body>
+<h1>HTTP/1.1 Resource Concatenation</h1>
+<p>Open DevTools → Network to compare with and without concatenation.</p>
+
+<!-- Without concatenation -->
+<h3>Without Concatenation:</h3>
+<script src="scripts/one.js"></script>
+<script src="scripts/two.js"></script>
+<script src="scripts/three.js"></script>
+
+<!-- With concatenation -->
+<h3>With Concatenation:</h3>
+<script src="/concat?scripts=one.js,two.js,three.js"></script>
+</body>
+</html>

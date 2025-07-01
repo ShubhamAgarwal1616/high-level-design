@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Serial HTTP Connections Demo</title>
+</head>
+<body>
+<h1>Serial HTTP Connections (No Keep-Alive)</h1>
+<p>Each JS file is requested with a new TCP connection.</p>
+<p>Open DevTools → Network → Enable <strong>Connection ID</strong></p>
+
+<script src="/file1.js"></script>
+<script src="/file2.js"></script>
+<script src="/file3.js"></script>
+</body>
+</html>

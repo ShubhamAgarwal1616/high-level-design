@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HTTP Pipelining Demo</title>
+</head>
+<body>
+<h1>HTTP/1.1 Pipelining (Browser Simulation)</h1>
+<p>This simulates sequential requests from a browser (not true pipelining).</p>
+<button onclick="loadAll()">Fetch JSON Files</button>
+<pre id="output"></pre>
+
+<script>
+  async function loadAll() {
+    const output = document.getElementById('output');
+    output.innerText = '';
+    for (const name of ['one', 'two', 'three']) {
+      const res = await fetch(`/data/${name}.json`);
+      const json = await res.json();
+      output.innerText += JSON.stringify(json) + '\n';
+    }
+  }
+</script>
+</body>
+</html>

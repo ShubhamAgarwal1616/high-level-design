@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>3xx Redirect Demo</title>
+</head>
+<body>
+<h1>HTTP/1.1 3xx Redirect Demo</h1>
+<ul>
+    <li><a href="/redirect-301">🔁 301 Moved Permanently</a></li>
+    <li><a href="/redirect-302">🔁 302 Found (Temporary)</a></li>
+    <li>
+        <form action="/redirect-307" method="POST">
+            <button type="submit">🔁 307 Temporary Redirect (POST)</button>
+        </form>
+    </li>
+    <li>
+        <form action="/redirect-308" method="POST">
+            <button type="submit">🔁 308 Permanent Redirect (POST)</button>
+        </form>
+    </li>
+</ul>
+<p>👀 Open DevTools → Network tab to inspect redirect behavior and status codes.</p>
+</body>
+</html>
