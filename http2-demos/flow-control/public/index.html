@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>HTTP/2 Flow Control Demo</title>
+</head>
+<body>
+<h1>HTTP/2 Flow Control Demo</h1>
+<button onclick="startDownload()">Start Download</button>
+<pre id="log"></pre>
+
+<script>
+  async function startDownload() {
+    const log = document.getElementById('log');
+    const response = await fetch('/data');
+
+    if (!response.body) {
+      log.textContent += 'Streaming not supported.\n';
+      return;
+    }
+
+    const reader = response.body.getReader();
+    let received = 0;
+
+    async function read() {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) {
+          log.textContent += '✅ Done receiving.\n';
+          break;
+        }
+        received += value.length;
+        log.textContent += `📦 Received ${value.length} bytes (Total: ${Math.round(received / 1024 / 1024)} MB)\n`;
+      }
+    }
+
+    await read();
+  }
+</script>
+</body>
+</html>

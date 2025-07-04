@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>HTTP/2 Header Compression</title>
+</head>
+<body>
+<h1>HTTP/2 Header Compression Demo</h1>
+<button onclick="sendRequests()">Send Repeated Requests</button>
+<pre id="log"></pre>
+
+<script>
+  async function sendRequests() {
+    const log = document.getElementById('log');
+    log.textContent = '';
+
+    for (let i = 1; i <= 10; i++) {
+      const res = await fetch('/headers');
+      const json = await res.json();
+      log.textContent += `#${i} => ${JSON.stringify(json)}\n`;
+    }
+
+    log.textContent += '\n🔍 Open DevTools → Network tab → Observe repeated `/headers` request.\nCheck headers and size.\n';
+  }
+</script>
+</body>
+</html>

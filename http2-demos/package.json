@@ -1,0 +1,26 @@
+{
+  "name": "http2-demos",
+  "version": "1.0.0",
+  "description": "Node.js HTTP/2 feature demos: multiplexing, prioritization, flow control, server push, header compression",
+  "main": "server.js",
+  "scripts": {
+    "start:multiplexing": "node multiplexing/server.js",
+    "start:prioritization": "node stream-prioritization/server.js",
+    "start:flowcontrol": "node flow-control/server.js",
+    "start:push": "node server-push/server.js",
+    "start:headers": "node header-compression/server.js"
+  },
+  "keywords": [
+    "http2",
+    "nodejs",
+    "demo",
+    "multiplexing",
+    "stream-prioritization",
+    "server-push",
+    "flow-control",
+    "header-compression"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "dependencies": {}
+}
