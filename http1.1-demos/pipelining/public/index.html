@@ -15,9 +15,9 @@
     const output = document.getElementById('output');
     output.innerText = '';
     for (const name of ['one', 'two', 'three']) {
-      const res = await fetch(`/data/${name}.json`);
-      const json = await res.json();
-      output.innerText += JSON.stringify(json) + '\n';
+      const res = fetch(`/data/${name}.json`);
+          // const json =  res.json();
+          // output.innerText += JSON.stringify(json) + '\n';
     }
   }
 </script>

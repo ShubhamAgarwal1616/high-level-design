@@ -9,24 +9,24 @@
 <p>Open DevTools → Network → Click columns → Enable <strong>Connection ID</strong></p>
 <p>All files below should share the same TCP connection ID.</p>
 
-<script src="/file1.js"></script>
-<script src="/file2.js"></script>
-<script src="/file3.js"></script>
+<!--<script src="/file1.js"></script>-->
+<!--<script src="/file2.js"></script>-->
+<!--<script src="/file3.js"></script>-->
 <!--enable below code to avoid generating multiple connections-->
 
-<!--<script>-->
-<!--  const scripts = ['file1.js', 'file2.js', 'file3.js'];-->
-<!--  async function loadSerially() {-->
-<!--    for (const src of scripts) {-->
-<!--      await new Promise(resolve => {-->
-<!--        const s = document.createElement('script');-->
-<!--        s.src = src;-->
-<!--        s.onload = resolve;-->
-<!--        document.body.appendChild(s);-->
-<!--      });-->
-<!--    }-->
-<!--  }-->
-<!--  loadSerially();-->
-<!--</script>-->
+<script>
+  const scripts = ['file1.js', 'file2.js', 'file3.js'];
+  async function loadSerially() {
+    for (const src of scripts) {
+      await new Promise(resolve => {
+        const s = document.createElement('script');
+        s.src = src;
+        s.onload = resolve;
+        document.body.appendChild(s);
+      });
+    }
+  }
+  loadSerially();
+</script>
 </body>
 </html>
