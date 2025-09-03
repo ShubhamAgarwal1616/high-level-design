@@ -1,1 +1,1 @@
-console.log("✅ JS loaded via server push or normal fetch.");
+console.log('server push')

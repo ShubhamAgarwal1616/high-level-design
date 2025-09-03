@@ -1,17 +1,16 @@
+# Start HTTP/2 Server
+Generate a self-signed cert:
 
-nghttpd --no-tls -d ./public --push=server_push.txt 8443
+`openssl req -new -x509 -days 365 -nodes \
+-out server.crt -keyout server.key \
+-subj "/CN=localhost"
+`
 
-# Test in Chrome (or any HTTP/2-enabled browser)
-Go to:
+run `h2o -c h2o.conf`
 
-bash
-Copy
-Edit
-http://localhost:8443/index.html
-Open DevTools → Network tab
 
-Reload and watch for:
+# Test server push with CLI
+nghttp -ans https://localhost:8443/index.html
 
-style.css and app.js marked as (Push) under Initiator
+### http2-push-preload: ON is not enabled in older version og h2o, you have to go to h2o-3 for that
 
-They load instantly without a network request!

@@ -84,3 +84,77 @@ https://localhost:8443/big2.bin --urgency=7
 → urgency 0 = highest priority, 7 = lowest.
 
 H2O ≥2.3.0 will honor that and you’ll see the high-urgency stream fill first.
+
+
+# logs explaination 
+
+### 1. Data frames arriving from server
+   [  0.055] recv DATA frame <length=16384, flags=0x00, stream_id=1>
+   [  0.055] recv DATA frame <length=16384, flags=0x00, stream_id=3>
+
+
+DATA frame → carries application payload (your big1.bin, big2.bin).
+
+length=16384 → that’s exactly the maximum frame size (16 KB is default).
+
+stream_id=1 and stream_id=3 → two different HTTP/2 requests being multiplexed.
+
+Arrival alternates → server is sending them in round-robin, since no prioritization is being honored.
+
+### 2. Slight variation in frame length
+   recv DATA frame <length=16383, flags=0x00, stream_id=3>
+
+
+Sometimes the last chunk is not a full 16384, because the file size isn’t a perfect multiple of 16 KB.
+
+Nothing special here — just leftover bytes.
+
+### 3. Window updates
+   send WINDOW_UPDATE frame <length=4, flags=0x00, stream_id=0>
+   (window_size_increment=32768)
+
+   send WINDOW_UPDATE frame <length=4, flags=0x00, stream_id=1>
+   (window_size_increment=32768)
+
+   send WINDOW_UPDATE frame <length=4, flags=0x00, stream_id=3>
+   (window_size_increment=32767)
+
+
+- This is the flow control mechanism of HTTP/2:
+
+- Every stream and the overall connection has a flow-control window (how many bytes may be in flight).
+
+- When nghttp consumes data, it sends a WINDOW_UPDATE telling the server: “You may now send me N more bytes on this stream”.
+
+- Here, window_size_increment=32768 means: “open up another 32 KB of window”.
+
+- stream_id=0 → connection-level window (applies to all streams).
+
+- stream_id=1 → stream-level window for request #1.
+
+- stream_id=3 → stream-level window for request #3.
+
+- The slight off-by-one (32767) is just how the math worked out in the buffer accounting.
+
+### 4. Repetition
+   recv DATA frame ... stream_id=1
+   recv DATA frame ... stream_id=3
+   ...
+   send WINDOW_UPDATE ...
+
+
+This cycle repeats:
+
+- Server sends DATA (16 KB chunks) for both streams.
+
+- Client acknowledges consumption by incrementing the windows.
+
+- Because there’s no prioritization, the server keeps alternating evenly between the streams.
+
+### 🧩 What this tells us
+
+- Your server is respecting flow control (won’t flood data without window updates).
+
+- Frames are interleaved at 16 KB boundaries → classic HTTP/2 multiplexing.
+
+- Both streams are given equal treatment → confirms prioritization isn’t in effect (as suspected earlier).
